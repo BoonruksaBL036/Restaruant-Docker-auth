@@ -22,7 +22,7 @@ setFilteredRestaurants(result);
   };
   useEffect(()=>{
     //call api: getAllRestaurants
-    fetch("http://localhost:5000/restaurants").then((res)=>{
+    fetch("http://localhost:5000/api/v1/restaurants").then((res)=>{
       // convert to json format
       return res.json()
     })

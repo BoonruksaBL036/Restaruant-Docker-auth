@@ -79,7 +79,6 @@ restaurantController.update = async (req, res) => {
     }
   )
     .then((num) => {
-      console.log(typeof(num[0]));
       if (num[0] === 1) {
         res.send({ message: "Restaurant update successfully!" });
       } else {
