@@ -1,22 +1,19 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const menuItem = [
-    {id:1,
-      name: "Add restaurant",
-      url: "/add",
-    },
+    { id: 1, name: "Add restaurant", url: "/add" },
     {
-      id:2,
+      id: 2,
       name: "search",
       url: "/",
     },
     {
-      id:3,
+      id: 3,
       name: "About Us",
       url: "/",
     },
-    
   ];
   return (
     <div className="navbar bg-base-100 shadow-sm">
@@ -50,7 +47,9 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        <a href="/" className="btn btn-ghost text-xl">Grad Restaurant</a>
+        <a href="/" className="btn btn-ghost text-xl">
+          Grad Restaurant
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -62,7 +61,9 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-outline btn-primary mx-2">Register</button>
+        <a href='/register' className="btn btn-outline btn-primary mx-2">
+          Register
+        </a>
         <button className="btn btn-outline btn-success mx-2">Login</button>
       </div>
     </div>

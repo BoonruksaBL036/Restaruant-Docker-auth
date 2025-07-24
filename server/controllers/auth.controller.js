@@ -1,9 +1,7 @@
 import db from "../models/index.js";
-
 const User = db.User;
 const Role = db.Role;
-
-
+import config from "../config/auth.config.js";
 import bcrypt from "bcryptjs"; // ใช้เข้ารหัสของ password
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize"; // import operator เช่น AND OR
@@ -34,10 +32,10 @@ authController.Register = async (req, res) => {
 
 
         const newUser = {
-            username: username,
-            fullName: fullName,
-            email: email,
-            password: password,
+          username: username,
+          fullName: fullName,
+          email: email,
+          password: bcrypt.hashSync(password, 8),
         };
 
 
@@ -69,5 +67,55 @@ authController.Register = async (req, res) => {
             });
         });
     });
-}
+};
+
+authController.singIn = async(req, res)=>{
+    const {username,password} = req.body;
+    if(!username || !password){
+        res.status(400).send({
+            message: "Username or password are missing",
+        });
+        return;
+    }
+    await User.findOne({
+        where:{ username:username },
+    }).then((user)=>{
+        if(!user){
+            res.status(404).send({ message: "User not found!"});
+            return;
+        }
+        const passwordIsValid = bcrypt.compareSync(password, user.password)
+        if(!passwordIsValid){
+            res.status(401).send({message:"Invalid  password"})
+        }
+        //Valid User
+        const token = jwt.sign({ username: user.username }, 
+            config.secret,{
+                expiresIn: 60 * 60 * 24,//60sec *60min *24h = 864000
+            });
+        const authorities = [];
+        user.getRoles().then((roles)=>{
+            for(let i = 0; i<roles.length; i++){
+                //ROLES_USER
+                authorities.push("ROLES_" + roles[i].roleName.toUpperCase());
+            }
+            res.send({
+              tokn: token,
+              authorities: authorities,
+              userInfo: {
+                name: user.fullName,
+                email: user.email,
+                username: user.username,
+              },
+            });
+        });
+        
+    }).catch((err)=> {
+        res.status(500).send({
+        message:
+            err.message || "Something error",
+        });
+    })
+};
+
 export default authController;

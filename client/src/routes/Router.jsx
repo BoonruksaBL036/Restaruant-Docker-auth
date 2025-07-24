@@ -2,18 +2,23 @@ import { createBrowserRouter } from "react-router";
 import Add from "../pages/Add";
 import Home from "../pages/Home";
 import Update from "../pages/Update";
+import Register from "../pages/Register";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: <Home />,
   },
   {
     path: "/add",
-    element: <Add />
+    element: <Add />,
   },
   {
     path: "/update/:id",
-    element: <Update />
+    element: <Update />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   }
 ]);
 export default router;
