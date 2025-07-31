@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import RestaurantService from "../service/restaurant.service";
 
 const Update = () => {
   //Get Id from URL
@@ -12,21 +13,11 @@ const Update = () => {
 
   //2. Get Restaurant by ID
   useEffect(() => {
-    fetch("http://localhost:5000/api/v1/restaurants/" + id)
-      .then((res) => {
-        return res.json();
-      })
-      .then((response) => {
-        //save to state
-        setRestaurant(response);
-      })
-      .catch((err) => {
-        //catch error
-        console.log(err.message);
-      });
+    const response = RestaurantService.getRestaurantById(id);
+    setRestaurant(response.data);
+    console.log("RESPONSE: ", response);
+    console.log("RESTO:", response.data);
   }, [id]);
-
-  console.log(restaurant);
 
   const handlechange = (e) => {
     const { name, value } = e.target;

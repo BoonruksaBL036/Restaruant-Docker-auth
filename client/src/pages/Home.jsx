@@ -1,6 +1,8 @@
 import React,{useState, useEffect} from "react";
 import Navbar from "../Component/Navbar";
 import Restaurants from "../Component/Restaurants";
+import RestaurantService from "../service/restaurant.service";
+import swal from "sweetalert2";
 
 
 const Home = () => {
@@ -21,20 +23,23 @@ const Home = () => {
 setFilteredRestaurants(result);
   };
   useEffect(()=>{
-    //call api: getAllRestaurants
-    fetch("http://localhost:5000/api/v1/restaurants").then((res)=>{
-      // convert to json format
-      return res.json()
-    })
-    .then((response)=>{
-      // save to state
-      setRestaurants(response)
-      setFilteredRestaurants(response);
-    })
-    .catch((err)=>{
-      // catch error
-      console.log(err.message);
-    })
+    const getAllRestaurants = async () =>{
+      try {
+        const response = await RestaurantService.getAllRestaurants();
+        console.log(response);
+
+        if (response.status === 200){
+          setRestaurants(response.data);
+          setFilteredRestaurants(response.data);
+        }
+      }catch (error) {
+        swal.fire({
+          title:"Get All Restaurants",
+          text: error?.response?.data?.message || error.message
+        });
+      }
+    };
+    getAllRestaurants();
   },[]);
 
   return (
