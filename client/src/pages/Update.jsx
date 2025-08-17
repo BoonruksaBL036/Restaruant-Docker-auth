@@ -13,10 +13,16 @@ const Update = () => {
 
   //2. Get Restaurant by ID
   useEffect(() => {
-    const response = RestaurantService.getRestaurantById(id);
-    setRestaurant(response.data);
-    console.log("RESPONSE: ", response);
-    console.log("RESTO:", response.data);
+    const fetchRestaurantById = async () => {
+      try{
+        const response = await RestaurantService.getRestaurantById(id);
+        setRestaurant(response.data);
+      }catch(err) {
+        console.log(err);
+      }
+    }
+
+    fetchRestaurantById();
   }, [id]);
 
   const handlechange = (e) => {
@@ -26,17 +32,8 @@ const Update = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/restaurants/" + id,
-        {
-          method: "PUT",
-          body: JSON.stringify(restaurant),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.ok) {
+      const response = await RestaurantService.editRestaurantById(id, restaurant);
+      if (response.status == 200) {
         alert("Restaurant updated successfully!!");
         setRestaurant({
           title: "",

@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
+import { useAuthContext } from "../context/AuthContext";
+import UserProfile from "./UserProfile";
 
 const Navbar = () => {
+  const { user } = useAuthContext();
   const menuItem = [
     { id: 1, name: "Add restaurant", url: "/add" },
     {
@@ -15,6 +18,7 @@ const Navbar = () => {
       url: "/",
     },
   ];
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -60,12 +64,16 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="navbar-end">
-        <a href='/register' className="btn btn-outline btn-primary mx-2">
-          Register
-        </a>
-        <button className="btn btn-outline btn-success mx-2">Login</button>
-      </div>
+        {!user? (
+        <div className="navbar-end">
+          <a href='/register' className="btn btn-outline btn-primary mx-2">
+            Register
+          </a>
+          <a href='/login'className="btn btn-outline btn-success mx-2">Login</a>
+        </div>
+        ) : (
+          <UserProfile/>
+        )}
     </div>
   );
 };

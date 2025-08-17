@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import RestaurantService from "../service/restaurant.service";
+
 
 const Add = () => {
   const [restaurant, setRestaurant] = useState({
@@ -12,14 +14,9 @@ const Add = () => {
   };
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/v1/restaurants", {
-        method: "POST",
-        body: JSON.stringify(restaurant),
-        headers:{
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
+      const response = await RestaurantService.insertRestaurant(restaurant);
+      console.log("RESPONSE:", response);
+      if (response.status == 200) {
         alert("Restaurant added successfully!!");
         setRestaurant({
           title: "",
@@ -28,7 +25,7 @@ const Add = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.log("ERROR: ", error);
     }
   };
   return (

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import AuthService from "../service/auth.service";
 
 function Register() {
   const [register, setRegister] = useState({
     username: "",
-    fullname: "",
+    fullName: "",
     email: "",
     password: "",
     repeatPassword: "",
@@ -11,7 +12,7 @@ function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRegister((prev) => ({ ...prev, [name]: value }));
+    setRegister({ ...register, [name]: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,38 +20,34 @@ function Register() {
       alert("Passwords do not match!");
       return;
     }
-
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: register.username,
-            fullname: register.fullname,
-            email: register.email,
-            password: register.password,
-          }),
-        }
+      const newUser = await AuthService.register(
+        register.username,
+        register.fullName,
+        register.email,
+        register.password
       );
-
-      if (response.ok) {
-        alert("Register successful!");
-        setRegister({
-          username: "",
-          fullname: "",
-          email: "",
-          password: "",
-          repeatPassword: "",
+      if (newUser.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "เข้าสู่ระบบสำเร็จ",
+          text: newUser.data.message,
+        }).then(() => {
+          setUser({
+            username: "",
+            fullName: "",
+            email: "",
+            password: "",
+          });
+        navigate("/login");
         });
-      } else {
-        const errorData = await response.json();
-        alert(`Register failed: ${errorData.message || "Unknown error"}`);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
-      alert("Something went wrong. Please try again.");
+     Swal.fire({
+        icon: "error",
+        title: "เข้าสู่ระบบล้มเหลว",
+        text: error?.response?.data?.message || error.message,
+      });
     }
   };
 
@@ -62,7 +59,7 @@ function Register() {
         </h2>
         <div className="mb-5">
           <label
-            for="name"
+            htmlFor="username"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Name
@@ -70,6 +67,7 @@ function Register() {
           <input
             type="text"
             id="username"
+            name="username"
             className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
             value={register.username}
             onChange={handleChange}
@@ -79,24 +77,25 @@ function Register() {
         </div>
         <div className="mb-5">
           <label
-            for="Full name"
+            htmlFor="fullName"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Full Name
           </label>
           <input
             type="text"
-            id="fullname"
+            id="fullName"
+            name="fullName"
             className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
-            value={register.fullname}
+            value={register.fullName}
             onChange={handleChange}
             placeholder="full name"
             required
           />
         </div>
-        <div class="mb-5">
+        <div className="mb-5">
           <label
-            for="email"
+            htmlFor="email"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Your email
@@ -104,6 +103,7 @@ function Register() {
           <input
             type="email"
             id="email"
+            name="email"
             className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
             value={register.email}
             onChange={handleChange}
@@ -113,7 +113,7 @@ function Register() {
         </div>
         <div class="mb-5">
           <label
-            for="password"
+            htmlFor="password"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Your password
@@ -121,6 +121,7 @@ function Register() {
           <input
             type="password"
             id="password"
+            name="password"
             value={register.password}
             onChange={handleChange}
             className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
@@ -129,16 +130,17 @@ function Register() {
         </div>
         <div class="mb-5">
           <label
-            for="repeat-password"
+            htmlFor="repeatPassword"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Repeat password
           </label>
           <input
             type="password"
-            id="repeat-password"
-            value={register.repeatPassword}
+            id="repeatPassword"
+            name="repeatPassword"
             onChange={handleChange}
+            value={register.repeatPassword}
             className="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
             required
           />
@@ -149,12 +151,6 @@ function Register() {
           onClick={handleSubmit}
         >
           Register new account
-        </button>
-        <button
-          type="button"
-          className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-        >
-          Cancel
         </button>
       </form>
     </div>

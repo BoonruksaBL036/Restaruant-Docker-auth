@@ -100,7 +100,7 @@ authController.singIn = async(req, res)=>{
                 authorities.push("ROLES_" + roles[i].roleName.toUpperCase());
             }
             res.send({
-              tokn: token,
+              token: token,
               authorities: authorities,
               userInfo: {
                 name: user.fullName,

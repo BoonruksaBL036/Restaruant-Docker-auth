@@ -3,17 +3,18 @@ import TokenService from "./token.service";
 
 const API_URL = import.meta.env.VITE_AUTH_API;
 
-const register = async (username, fullname, email, password) => {
-    return api.post(API_URL + "register", {username, fullname, email, password });
+const register = async (data) => {
+    return api.post(API_URL + "/register", data);
 };
 
-const login = async(username, password) =>{
-    const response = await api.post(API_URL + "singin", { username, password });
+const login = async(data) =>{
+    const response = await api.post(API_URL + "/signin",data);
     //saving user data to local storage
     if(!response.data.token){
         return response;
     }
     TokenService.setUser(response.data);
+    return response
 };
 
 const logout = ()=>{
@@ -26,4 +27,4 @@ const AuthService = {
     logout,
 };
 
-export default AuthService;;
+export default AuthService;
