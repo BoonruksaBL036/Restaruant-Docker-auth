@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import RestaurantService from "../service/restaurant.service";
+import { useAuthContext } from "../context/AuthContext";
+
 
 const Update = () => {
+  const { user } = useAuthContext();
+
   //Get Id from URL
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState({
@@ -14,13 +18,13 @@ const Update = () => {
   //2. Get Restaurant by ID
   useEffect(() => {
     const fetchRestaurantById = async () => {
-      try{
+      try {
         const response = await RestaurantService.getRestaurantById(id);
         setRestaurant(response.data);
-      }catch(err) {
+      } catch (err) {
         console.log(err);
       }
-    }
+    };
 
     fetchRestaurantById();
   }, [id]);
@@ -32,7 +36,10 @@ const Update = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await RestaurantService.editRestaurantById(id, restaurant);
+      const response = await RestaurantService.editRestaurantById(
+        id,
+        restaurant
+      );
       if (response.status == 200) {
         alert("Restaurant updated successfully!!");
         setRestaurant({

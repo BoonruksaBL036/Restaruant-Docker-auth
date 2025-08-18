@@ -4,7 +4,8 @@ import TokenService from "./token.service";
 const API_URL = import.meta.env.VITE_AUTH_API;
 
 const register = async (data) => {
-    return api.post(API_URL + "/register", data);
+    const response = api.post(API_URL + "/register", data);
+    return response
 };
 
 const login = async(data) =>{

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../service/auth.service";
+import Swal from "sweetalert2";
 
 function Register() {
   const [register, setRegister] = useState({
@@ -22,10 +23,7 @@ function Register() {
     }
     try {
       const newUser = await AuthService.register(
-        register.username,
-        register.fullName,
-        register.email,
-        register.password
+        register
       );
       if (newUser.status === 200) {
         Swal.fire({
@@ -39,11 +37,11 @@ function Register() {
             email: "",
             password: "",
           });
-        navigate("/login");
+          navigate("/login");
         });
       }
     } catch (error) {
-     Swal.fire({
+      Swal.fire({
         icon: "error",
         title: "เข้าสู่ระบบล้มเหลว",
         text: error?.response?.data?.message || error.message,

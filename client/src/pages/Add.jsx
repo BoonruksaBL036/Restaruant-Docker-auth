@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RestaurantService from "../service/restaurant.service";
-
+import { useAuthContext } from "../context/AuthContext";
 
 const Add = () => {
+  const { user } = useAuthContext();
   const [restaurant, setRestaurant] = useState({
     title: "",
     type: "",
     img: "",
   });
+
+
   const handlechange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });

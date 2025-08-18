@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../service/auth.service";
 import { useNavigate } from "react-router";
+import {useAuthContext} from "../context/AuthContext"
 import Swal from "sweetalert2";
 
 const Login = () => {
   const [login, setLogin] = useState({
     username: "",
-    password: ""
+    password: "",
   });
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { login:loginFn, user } = useAuthContext();
+
+  useEffect(()=>{
+    if(user){
+      navigate("/");
+    }
+  },[user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +26,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await AuthService.login(login);
-        console.log("RESPONSE: ", response);
-      if (response.status === 200) {
+      console.log (response);
+      if (response.status == 200) {
         Swal.fire({
           icon: "success",
           title: "เข้าสู่ระบบสำเร็จ",
@@ -27,6 +35,7 @@ const Login = () => {
         }).then(() => {
           navigate("/");
         });
+        loginFn(response.data);
       }
     } catch (error) {
       Swal.fire({
@@ -61,7 +70,7 @@ const Login = () => {
             required
           />
         </div>
-       
+
         <div className="mb-5">
           <label
             htmlFor="password"
@@ -89,6 +98,6 @@ const Login = () => {
       </form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

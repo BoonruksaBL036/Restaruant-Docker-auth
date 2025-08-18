@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import { useAuthContext } from "../context/AuthContext";
 
 const Card = (props) => {
+  const { user } = useAuthContext();
   const handleDelete = async (id) => {
     try {
       const result = await Swal.fire({
@@ -41,17 +43,26 @@ const Card = (props) => {
         <div className="card-body">
           <h2 className="card-title">{props.title}</h2>
           <p>{props.type}</p>
-          <div className="card-actions justify-end">
-            <button
-              onClick={() => handleDelete(props.id)}
-              className="btn btn-error"
-            >
-              Delete
-            </button>
-            <Link to={`/update/${props.id}`} className="btn btn-warning">
-              Edit
-            </Link>
-          </div>
+          {user && user?.authorities.includes("ROLES_ADMIN") && (
+            <div className="card-actions justify-end">
+              <button
+                onClick={() => handleDelete(props.id)}
+                className="btn btn-error"
+              >
+                Delete
+              </button>
+              <Link to={`/update/${props.id}`} className="btn btn-warning">
+                Edit
+              </Link>
+            </div>
+          )}
+          {user && user?.authorities.includes("ROLES_MODERATOR") && (
+            <div className="card-actions justify-end">
+              <Link to={`/update/${props.id}`} className="btn btn-warning">
+                Edit
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -1,12 +1,15 @@
-import React from 'react'
-import Card from './Card';
+import React from "react";
+import Card from "./Card";
+import { useAuthContext } from "../context/AuthContext";
 
 const Restaurants = (props) => {
-  const {restaurant}=props;
+  const { user } = useAuthContext();
+  const { restaurant } = props;
+  console.log (user)
   return (
     <div className="flex">
       <div className="flex flex-wrap justify-center gap-4">
-        {restaurant &&
+        {restaurant && user &&
           restaurant.map((restaurant) => (
             <Card
               key={restaurant.id}
@@ -16,9 +19,11 @@ const Restaurants = (props) => {
               image={restaurant.img}
             />
           ))}
+        {!user  && <div>You don't have permission to access this content</div>}
+        {!restaurant && <div>No content</div>}
       </div>
     </div>
   );
-}
+};
 
-export default Restaurants
+export default Restaurants;
