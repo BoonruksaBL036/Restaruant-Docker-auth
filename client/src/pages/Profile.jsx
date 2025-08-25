@@ -1,4 +1,9 @@
 import React from "react";
+import { useAuthContext } from "../context/AuthContext";
+
+const handleLogOut = () => {
+  logout();
+};
 
 const Profile = () => {
   return (
@@ -21,7 +26,9 @@ const Profile = () => {
             {/* Actions */}
             <div className="card-actions flex flex-col sm:flex-row gap-3 w-full">
               <button className="btn btn-primary flex-1">แก้ไขโปรไฟล์</button>
-              <button className="btn btn-outline flex-1">ออกจากระบบ</button>
+              <a className="btn btn-outline flex-1" onClick={handleLogOut}>
+                ออกจากระบบ
+              </a>
             </div>
           </div>
         </div>

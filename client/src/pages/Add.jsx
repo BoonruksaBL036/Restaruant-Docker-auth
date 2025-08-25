@@ -10,7 +10,6 @@ const Add = () => {
     img: "",
   });
 
-
   const handlechange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });
@@ -18,8 +17,7 @@ const Add = () => {
   const handleSubmit = async () => {
     try {
       const response = await RestaurantService.insertRestaurant(restaurant);
-      console.log("RESPONSE:", response);
-      if (response.status == 200) {
+      if (response.status === 200) {
         alert("Restaurant added successfully!!");
         setRestaurant({
           title: "",
