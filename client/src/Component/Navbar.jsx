@@ -1,23 +1,24 @@
 import React from "react";
+import { Link } from "react-router";
+import { useAuthContext } from "../context/AuthContext";
+import UserProfile from "./UserProfile";
 
 const Navbar = () => {
+  const { user } = useAuthContext();
   const menuItem = [
-    {id:1,
-      name: "Add restaurant",
-      url: "/add",
-    },
+    { id: 1, name: "Add restaurant", url: "/add" },
     {
-      id:2,
+      id: 2,
       name: "search",
       url: "/",
     },
     {
-      id:3,
+      id: 3,
       name: "About Us",
       url: "/",
     },
-    
   ];
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -50,7 +51,9 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
-        <a href="/" className="btn btn-ghost text-xl">Grad Restaurant</a>
+        <a href="/" className="btn btn-ghost text-xl">
+          Grad Restaurant
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -61,10 +64,16 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="navbar-end">
-        <button className="btn btn-outline btn-primary mx-2">Register</button>
-        <button className="btn btn-outline btn-success mx-2">Login</button>
-      </div>
+        {!user? (
+        <div className="navbar-end">
+          <a href='/register' className="btn btn-outline btn-primary mx-2">
+            Register
+          </a>
+          <a href='/login'className="btn btn-outline btn-success mx-2">Login</a>
+        </div>
+        ) : (
+          <UserProfile/>
+        )}
     </div>
   );
 };

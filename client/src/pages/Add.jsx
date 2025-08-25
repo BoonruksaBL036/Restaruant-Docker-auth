@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import Navbar from "../Component/Navbar";
+import React, { useState, useEffect } from "react";
+import RestaurantService from "../service/restaurant.service";
+import { useAuthContext } from "../context/AuthContext";
 
 const Add = () => {
+  const { user } = useAuthContext();
   const [restaurant, setRestaurant] = useState({
     title: "",
     type: "",
     img: "",
   });
+
   const handlechange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });
   };
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/restaurants", {
-        method: "POST",
-        body: JSON.stringify(restaurant),
-      });
-      if (response.ok) {
+      const response = await RestaurantService.insertRestaurant(restaurant);
+      if (response.status === 200) {
         alert("Restaurant added successfully!!");
         setRestaurant({
           title: "",
@@ -26,7 +26,7 @@ const Add = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.log("ERROR: ", error);
     }
   };
   return (

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import RestaurantService from "../service/restaurant.service";
+import { useAuthContext } from "../context/AuthContext";
+
 
 const Update = () => {
-    //Get Id from URL
-    const {id} = useParams();
+  const { user } = useAuthContext();
+
+  //Get Id from URL
+  const { id } = useParams();
   const [restaurant, setRestaurant] = useState({
     title: "",
     type: "",
@@ -11,35 +16,31 @@ const Update = () => {
   });
 
   //2. Get Restaurant by ID
-  useEffect(()=>{
-    fetch("http://localhost:5000/restaurants/"+ id).then((res)=>{
-        return res.json();
-    })
-    .then((response)=>{
-        //save to state
-        setRestaurant(response);
-    })
-    .catch((err)=>{
-        //catch error
-        console.log(err.message);
-    });
-  }, [id]);
+  useEffect(() => {
+    const fetchRestaurantById = async () => {
+      try {
+        const response = await RestaurantService.getRestaurantById(id);
+        setRestaurant(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  console.log (restaurant)
+    fetchRestaurantById();
+  }, [id]);
 
   const handlechange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });
   };
 
-
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/restaurants/" + id, {
-        method: "PUT",
-        body: JSON.stringify(restaurant),
-      });
-      if (response.ok) {
+      const response = await RestaurantService.editRestaurantById(
+        id,
+        restaurant
+      );
+      if (response.status == 200) {
         alert("Restaurant updated successfully!!");
         setRestaurant({
           title: "",
