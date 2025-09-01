@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AuthService from "../service/auth.service";
+import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 function Register() {
@@ -10,6 +11,8 @@ function Register() {
     password: "",
     repeatPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,16 +25,14 @@ function Register() {
       return;
     }
     try {
-      const newUser = await AuthService.register(
-        register
-      );
+      const newUser = await AuthService.register(register);
       if (newUser.status === 200) {
         Swal.fire({
           icon: "success",
           title: "เข้าสู่ระบบสำเร็จ",
           text: newUser.data.message,
         }).then(() => {
-          setUser({
+          setRegister({
             username: "",
             fullName: "",
             email: "",
@@ -109,7 +110,7 @@ function Register() {
             required
           />
         </div>
-        <div class="mb-5">
+        <div className="mb-5">
           <label
             htmlFor="password"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -126,7 +127,7 @@ function Register() {
             required
           />
         </div>
-        <div class="mb-5">
+        <div className="mb-5">
           <label
             htmlFor="repeatPassword"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
