@@ -13,7 +13,7 @@ db.sequelize.sync({ force: false }).then(() => {
 
 import cors from "cors"
 app.use(cors({
-  origin: ["http://localhost:5173","127.0.0.1:5173",FRONTEND_URL],
+  origin: ["http://localhost:5173","127.0.0.1:5173", FRONTEND_URL, "https://restaruant-docker-auth.vercel.app"],
   methods: ["GET", "POST", "PUT","DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "x-access-token"],
   }));
