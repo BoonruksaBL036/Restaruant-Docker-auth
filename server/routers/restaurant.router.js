@@ -6,7 +6,7 @@ const router = express.Router();
 const { verifyToken, isAdmin, isModOrAdmin } = authMiddleware;
 
 //POST http://localhost:5000/api/v1/restaurants
-router.post("/", isAdmin, isModOrAdmin, restaurantController.create);
+router.post("/", verifyToken ,isAdmin, isModOrAdmin, restaurantController.create);
 
 //GET http://localhost:5000/api/v1/restaurants
 router.get("/", verifyToken, restaurantController.getAll);
