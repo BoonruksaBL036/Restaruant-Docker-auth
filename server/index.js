@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 import restaurantRouter from "./routers/restaurant.router.js"
 import authRouter from "./routers/auth.router.js";
 import db from "./models/index.js"
-const FRONTEND_URL = process.env.PORT
+const FRONTEND_URL = process.env.FRONTEND_URL;
 db.sequelize.sync({ force: false }).then(() => {
   console.log("create table user_roles");
 });
