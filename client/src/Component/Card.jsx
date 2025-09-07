@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../context/AuthContext";
 
+
 const Card = (props) => {
   const { user } = useAuthContext();
   const handleDelete = async (id) => {
@@ -29,6 +30,7 @@ const Card = (props) => {
             method: "Delete",
           }
         );
+        props.getAllRestaurants();
       }
     } catch (error) {
       console.log(error);

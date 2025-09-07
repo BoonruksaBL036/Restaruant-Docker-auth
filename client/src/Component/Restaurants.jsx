@@ -4,7 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 
 const Restaurants = (props) => {
   const { user } = useAuthContext();
-  const { restaurant } = props;
+  const { restaurant,getAllRestaurants } = props;
   console.log (user)
   return (
     <div className="flex">
@@ -17,6 +17,7 @@ const Restaurants = (props) => {
               title={restaurant.title}
               type={restaurant.type}
               image={restaurant.img}
+              getAllRestaurants={getAllRestaurants}
             />
           ))}
         {!user  && <div>You don't have permission to access this content</div>}

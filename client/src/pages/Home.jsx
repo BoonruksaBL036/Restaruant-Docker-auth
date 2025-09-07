@@ -21,8 +21,7 @@ const Home = () => {
     });
 setFilteredRestaurants(result);
   };
-  useEffect(()=>{
-    const getAllRestaurants = async () =>{
+  const getAllRestaurants = async () =>{
       try {
         const response = await RestaurantService.getAllRestaurants();
         console.log(response);
@@ -37,7 +36,8 @@ setFilteredRestaurants(result);
           text: error?.response?.data?.message || error.message
         });
       }
-    };
+    }; 
+  useEffect(()=>{
     getAllRestaurants();
   },[]);
 
@@ -74,7 +74,7 @@ setFilteredRestaurants(result);
           placeholder="Search" />
         </label>
       </div>
-      <Restaurants restaurant={filetedRestaurants}/>
+      <Restaurants getAllRestaurants={getAllRestaurants} restaurant={filetedRestaurants}/>
     </div>
   );
 };
