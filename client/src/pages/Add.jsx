@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RestaurantService from "../service/restaurant.service";
 import { useAuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router";
- const navigate = useNavigate();
 
 const Add = () => {
   const { user } = useAuthContext();
@@ -26,7 +24,6 @@ const Add = () => {
           type: "",
           img: "",
         });
-        navigate("/");
       }
     } catch (error) {
       console.log("ERROR: ", error);
