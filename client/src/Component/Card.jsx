@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../context/AuthContext";
 
+
 const Card = (props) => {
   const { user } = useAuthContext();
   const handleDelete = async (id) => {
@@ -24,11 +25,12 @@ const Card = (props) => {
         });
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await fetch(
-          "http://localhost:5000/api/v1/restaurants/" + id,
+          "https://restaruant-docker-auth.onrender.com/api/v1/restaurants/" + id,
           {
             method: "Delete",
           }
         );
+        props.getAllRestaurants();
       }
     } catch (error) {
       console.log(error);
