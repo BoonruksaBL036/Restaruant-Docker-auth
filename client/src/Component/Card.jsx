@@ -24,7 +24,7 @@ const Card = (props) => {
         });
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const response = await fetch(
-          "http://localhost:5000/api/v1/restaurants/" + id,
+          "https://restaruant-docker-auth.onrender.com/api/v1/restaurants/" + id,
           {
             method: "Delete",
           }
