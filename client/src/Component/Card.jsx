@@ -28,8 +28,16 @@ const Card = (props) => {
           "https://restaruant-docker-auth.onrender.com/api/v1/restaurants/" + id,
           {
             method: "Delete",
+            headers: {
+              "x-access-token": `${user.token}`
+            },
           }
         );
+        if(response.status != 0){
+          console.log("Status: ", response.status);
+        }else{
+          console.log("Error")
+        }
         props.getAllRestaurants();
       }
     } catch (error) {
