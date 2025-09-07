@@ -38,7 +38,7 @@ const isModOrAdmin = (req, res, next) => {
   User.findByPk(req.username).then((user) => {
     user.getRoles().then((roles) => {
       for (let i = 0; i < roles.length; i++) {
-        if (roles[i].roleName === "moderator" ) {
+        if (roles[i].roleName === "moderator" || roles[i].roleName === "admin" ) {
           next();
           return;
         }
